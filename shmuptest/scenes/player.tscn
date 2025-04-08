@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://bh8hdohdkmfe8"]
+
+[ext_resource type="Script" uid="uid://cpwtb86fn17mg" path="res://scripts/2d/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://cu5h3it3nyiqk" path="res://sprites/lizard.png" id="2_qhqgy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
+radius = 8.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
+atlas = ExtResource("2_qhqgy")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qlg0r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqkch")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="player" type="CharacterBody2D"]
+z_index = -1
+script = ExtResource("1_g2els")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+z_index = 1
+shape = SubResource("CircleShape2D_g2els")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_qlg0r")
+animation = &"idle"
+frame_progress = 0.886139

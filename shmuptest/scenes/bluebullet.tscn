@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=3 uid="uid://c24mu3hr1sdj6"]
+
+[ext_resource type="Script" uid="uid://bb05blsf4uuiy" path="res://scripts/2d/linearbullet.gd" id="1_dv4lf"]
+[ext_resource type="Texture2D" uid="uid://b2unybxob3hb0" path="res://sprites/bluebullet.png" id="1_odm1l"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y25gk"]
+atlas = ExtResource("1_odm1l")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l5glv"]
+atlas = ExtResource("1_odm1l")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eoqba"]
+atlas = ExtResource("1_odm1l")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qncy5"]
+atlas = ExtResource("1_odm1l")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tamys"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y25gk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l5glv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eoqba")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qncy5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_odm1l"]
+radius = 8.5
+
+[node name="bluebullet" type="Area2D"]
+script = ExtResource("1_dv4lf")
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_tamys")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.606981
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_odm1l")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-1.54972e-06, -1.54972e-06)
+scale = Vector2(1.2, 1.2)

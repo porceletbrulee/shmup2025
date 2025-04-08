@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8vh050y807xt"]
+
+[ext_resource type="Script" uid="uid://rmia46lcn1iw" path="res://scripts/2d/level.gd" id="1_2q6dc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_rd3vj"]
+
+[node name="Level" type="Node2D" node_paths=PackedStringArray("shooter")]
+script = ExtResource("1_2q6dc")
+shooter = NodePath("shooter")
+
+[node name="shooter" type="StaticBody2D" parent="."]
+position = Vector2(300, 300)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="shooter"]
+position = Vector2(-27.5, 0)
+scale = Vector2(129, 22)
+mesh = SubResource("BoxMesh_rd3vj")
+
+[node name="hud" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="hits" type="Label" parent="hud"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
