@@ -5,7 +5,7 @@ extends Node2D
 var _player: Node2D
 var _blue_bullet_shooter: LinearBulletShooter
 var _red_bullet_shooter: LinearBulletShooter
-
+var _diamond_path_bullet_shooter: LinearBulletShooter
 
 func _ready():
 	var blue_bullet = preload("res://scenes/bluebullet.tscn")
@@ -44,6 +44,18 @@ func _ready():
 		return [false, Vector2(), salvo_count]
 	self._red_bullet_shooter = LinearBulletShooter.new(red_bullet, shoot_red_bullet)
 
+
+	var diamond_path_bullet = preload("res://scenes/diamondpathbullet.tscn")
+	var shoot_diamond_path_bullet = func(elapsed_sec: float,
+										 since_last_shoot_sec: float,
+										 salvo_count,
+										 target: Node2D) -> Array:
+		if since_last_shoot_sec > 1.0:
+			return [true, Vector2(0, 1), 0]
+		else:
+			return [false, Vector2(), salvo_count]
+	self._diamond_path_bullet_shooter = LinearBulletShooter.new(diamond_path_bullet, shoot_diamond_path_bullet)
+
 	self._player = preload("res://scenes/player.tscn").instantiate()
 	self._player.ui_hits = $hud/hits
 	self._player.ui_hits.text = "Hits: 0"
@@ -51,9 +63,11 @@ func _ready():
 	self._player.transform.origin = Vector2(250, 400)
 
 func _process(delta_sec: float):
-	var blue_bullet = self._blue_bullet_shooter.maybe_shoot(delta_sec, self._player)
-	var red_bullet = self._red_bullet_shooter.maybe_shoot(delta_sec, self._player)
-	if blue_bullet != null:
-		self.shooter.add_child(blue_bullet)
-	if red_bullet != null:
-		self.shooter.add_child(red_bullet)
+	for bullet_shooter in [
+		self._blue_bullet_shooter,
+		self._red_bullet_shooter,
+		self._diamond_path_bullet_shooter,
+	]:
+		var b = bullet_shooter.maybe_shoot(delta_sec, self._player)
+		if b != null:
+			self.shooter.add_child(b)

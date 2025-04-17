@@ -1,0 +1,79 @@
+[gd_scene load_steps=11 format=3 uid="uid://ditky3uftbybw"]
+
+[ext_resource type="Script" uid="uid://bg78qudetcqgi" path="res://scripts/2d/bulletmanager.gd" id="1_u5qih"]
+[ext_resource type="Texture2D" uid="uid://b2unybxob3hb0" path="res://sprites/bluebullet.png" id="1_ujcy6"]
+[ext_resource type="Script" uid="uid://bnedy8sokm1f5" path="res://scripts/2d/pathbullet.gd" id="2_785va"]
+
+[sub_resource type="Curve2D" id="Curve2D_u5qih"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -101, 119, 0, 0, 0, 0, -1, 210, 0, 0, 0, 0, 87, 113, 0, 0, 0, 0, -1, 0)
+}
+point_count = 5
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y25gk"]
+atlas = ExtResource("1_ujcy6")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l5glv"]
+atlas = ExtResource("1_ujcy6")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eoqba"]
+atlas = ExtResource("1_ujcy6")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qncy5"]
+atlas = ExtResource("1_ujcy6")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tamys"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y25gk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l5glv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eoqba")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qncy5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_odm1l"]
+radius = 8.5
+
+[node name="Path2D" type="Path2D" node_paths=PackedStringArray("BULLETS")]
+curve = SubResource("Curve2D_u5qih")
+script = ExtResource("1_u5qih")
+BULLETS = [NodePath("PathFollow2D/diamondpathbullet")]
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+position = Vector2(-1, 0)
+rotation = 2.26965
+loop = false
+
+[node name="diamondpathbullet" type="Area2D" parent="PathFollow2D" node_paths=PackedStringArray("path_follow")]
+position = Vector2(-0.643343, -0.765578)
+rotation = -2.26965
+script = ExtResource("2_785va")
+path_follow = NodePath("..")
+
+[node name="sprite" type="AnimatedSprite2D" parent="PathFollow2D/diamondpathbullet"]
+sprite_frames = SubResource("SpriteFrames_tamys")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.606981
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/diamondpathbullet"]
+shape = SubResource("CircleShape2D_odm1l")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="PathFollow2D/diamondpathbullet"]
+position = Vector2(-1.54972e-06, -1.54972e-06)
+scale = Vector2(1.2, 1.2)
