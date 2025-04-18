@@ -32,4 +32,3 @@ func handle_movement(_delta_sec: float):
 func on_hit(bullet: Bullet):
 	self.hits += 1
 	self.ui_hits.text = "Hits: {0}".format([hits])
-	bullet.bullet_cleanup()

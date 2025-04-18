@@ -14,7 +14,12 @@ func prepare_target(target: Node2D):
 	var target_entered = func (entered_target: Node2D):
 		if entered_target == target:
 			target.on_hit(self)
+			self.bullet_hit(target)
 	self.body_entered.connect(target_entered)
+
+func bullet_hit(target: Node2D):
+	# TODO: sound effects, hit animation - maybe @export them
+	self.bullet_cleanup()
 
 func bullet_cleanup():
 	self.queue_free()
