@@ -5,7 +5,7 @@ class_name Bullet extends Area2D
 var manager: BulletManager = null
 
 func _ready():
-	self._visible_on_screen_notifier.screen_exited.connect(self.queue_free)
+	self._visible_on_screen_notifier.screen_exited.connect(self.bullet_cleanup)
 
 # target must have an on_hit function
 func prepare_target(target: Node2D):
