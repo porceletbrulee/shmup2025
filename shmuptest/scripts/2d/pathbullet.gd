@@ -15,7 +15,3 @@ func _process(delta_sec: float):
 	self.path_follow.progress_ratio += delta_sec * self._speed * 0.2
 	if self.path_follow.progress_ratio >= 1.0:
 		self.bullet_cleanup()
-
-func bullet_cleanup():
-	super()
-	self.manager.queue_free()

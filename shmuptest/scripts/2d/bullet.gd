@@ -23,3 +23,5 @@ func bullet_hit(target: Node2D):
 
 func bullet_cleanup():
 	self.queue_free()
+	if self.manager != null:
+		self.manager.bullet_cleaned_up(self)
