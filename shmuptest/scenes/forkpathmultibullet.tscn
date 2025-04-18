@@ -1,0 +1,135 @@
+[gd_scene load_steps=12 format=3 uid="uid://bslcl4br0f3t1"]
+
+[ext_resource type="Script" uid="uid://bg78qudetcqgi" path="res://scripts/2d/bulletmanager.gd" id="1_mv141"]
+[ext_resource type="Script" uid="uid://bnedy8sokm1f5" path="res://scripts/2d/pathbullet.gd" id="1_wiqkw"]
+[ext_resource type="Texture2D" uid="uid://b2unybxob3hb0" path="res://sprites/bluebullet.png" id="2_x14tk"]
+
+[sub_resource type="Curve2D" id="Curve2D_mv141"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 27.2284, -32.7321, -27.2284, 32.7321, -34, 27, 0, 0, 0, 0, -59, 65, 0, 0, 0, 0, -59, 359)
+}
+point_count = 4
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y25gk"]
+atlas = ExtResource("2_x14tk")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l5glv"]
+atlas = ExtResource("2_x14tk")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eoqba"]
+atlas = ExtResource("2_x14tk")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qncy5"]
+atlas = ExtResource("2_x14tk")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tamys"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y25gk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l5glv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eoqba")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qncy5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_odm1l"]
+radius = 8.5
+
+[sub_resource type="Curve2D" id="Curve2D_x14tk"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 344)
+}
+point_count = 3
+
+[node name="Forkpathmultibullet" type="Node2D" node_paths=PackedStringArray("bullets")]
+script = ExtResource("1_mv141")
+bullets = [NodePath("leftpath/PathFollow2D/leftbullet"), NodePath("rightpath/PathFollow2D/rightbullet"), NodePath("Path2D/PathFollow2D/midbullet")]
+
+[node name="leftpath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_mv141")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="leftpath"]
+rotation = 2.47045
+loop = false
+
+[node name="leftbullet" type="Area2D" parent="leftpath/PathFollow2D" node_paths=PackedStringArray("path_follow")]
+script = ExtResource("1_wiqkw")
+path_follow = NodePath("..")
+
+[node name="sprite" type="AnimatedSprite2D" parent="leftpath/PathFollow2D/leftbullet"]
+sprite_frames = SubResource("SpriteFrames_tamys")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.606981
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="leftpath/PathFollow2D/leftbullet"]
+shape = SubResource("CircleShape2D_odm1l")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="leftpath/PathFollow2D/leftbullet"]
+position = Vector2(-1.54972e-06, -1.54972e-06)
+scale = Vector2(1.2, 1.2)
+
+[node name="rightpath" type="Path2D" parent="."]
+scale = Vector2(-1, 1)
+curve = SubResource("Curve2D_mv141")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="rightpath"]
+rotation = 2.47045
+loop = false
+
+[node name="rightbullet" type="Area2D" parent="rightpath/PathFollow2D" node_paths=PackedStringArray("path_follow")]
+script = ExtResource("1_wiqkw")
+path_follow = NodePath("..")
+
+[node name="sprite" type="AnimatedSprite2D" parent="rightpath/PathFollow2D/rightbullet"]
+sprite_frames = SubResource("SpriteFrames_tamys")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.606981
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="rightpath/PathFollow2D/rightbullet"]
+shape = SubResource("CircleShape2D_odm1l")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="rightpath/PathFollow2D/rightbullet"]
+position = Vector2(-1.54972e-06, -1.54972e-06)
+scale = Vector2(1.2, 1.2)
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_x14tk")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+rotation = 1.5708
+loop = false
+
+[node name="midbullet" type="Area2D" parent="Path2D/PathFollow2D" node_paths=PackedStringArray("path_follow")]
+rotation = -0.899652
+scale = Vector2(1, -1)
+script = ExtResource("1_wiqkw")
+path_follow = NodePath("..")
+
+[node name="sprite" type="AnimatedSprite2D" parent="Path2D/PathFollow2D/midbullet"]
+sprite_frames = SubResource("SpriteFrames_tamys")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.606981
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/midbullet"]
+shape = SubResource("CircleShape2D_odm1l")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Path2D/PathFollow2D/midbullet"]
+position = Vector2(-1.54972e-06, -1.54972e-06)
+scale = Vector2(1.2, 1.2)

@@ -6,6 +6,7 @@ var _player: Node2D
 var _blue_bullet_shooter: LinearBulletShooter
 var _red_bullet_shooter: LinearBulletShooter
 var _diamond_path_bullet_shooter: LinearBulletShooter
+var _fork_bullet_shooter: LinearBulletShooter
 
 func _ready():
 	var blue_bullet = preload("res://scenes/bluebullet.tscn")
@@ -56,6 +57,18 @@ func _ready():
 			return [false, Vector2(), salvo_count]
 	self._diamond_path_bullet_shooter = LinearBulletShooter.new(diamond_path_bullet, shoot_diamond_path_bullet)
 
+	var fork_bullet = preload("res://scenes/forkpathmultibullet.tscn")
+	var shoot_fork_bullet = func(elapsed_sec: float,
+								 since_last_shoot_sec: float,
+								 salvo_count: int,
+								 target: Node2D) -> Array:
+		if since_last_shoot_sec > 2.0:
+			return [true, Vector2(0, 1), 0]
+		else:
+			return [false, Vector2(), salvo_count]
+	self._fork_bullet_shooter = LinearBulletShooter.new(fork_bullet, shoot_fork_bullet)
+
+
 	self._player = preload("res://scenes/player.tscn").instantiate()
 	self._player.ui_hits = $hud/hits
 	self._player.ui_hits.text = "Hits: 0"
@@ -67,6 +80,7 @@ func _process(delta_sec: float):
 		self._blue_bullet_shooter,
 		self._red_bullet_shooter,
 		self._diamond_path_bullet_shooter,
+		self._fork_bullet_shooter,
 	]:
 		var b = bullet_shooter.maybe_shoot(delta_sec, self._player)
 		if b != null:

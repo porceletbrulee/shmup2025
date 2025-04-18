@@ -9,6 +9,7 @@ func _ready():
 
 func prepare(v: Vector2, target: Node2D):
 	for bullet in bullets:
+		# TODO: maybe make a PathBulletManager that normalizes v on path length
 		bullet.prepare(v, target)
 
 func bullet_cleaned_up(bullet: Bullet):
