@@ -6,8 +6,8 @@ var _speed: float
 
 # default direction is down == Vector2(0, 1)
 func prepare(velocity: Vector2, target: Node2D):
+	super(velocity, target)
 	self._speed = velocity.length()
-	self.prepare_target(target)
 	# TODO: allow rotation of path element
 
 func _process(delta_sec: float):

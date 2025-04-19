@@ -8,7 +8,7 @@ func _ready():
 	self._visible_on_screen_notifier.screen_exited.connect(self.bullet_cleanup)
 
 # target must have an on_hit function
-func prepare_target(target: Node2D):
+func prepare(velocity: Vector2, target: Node2D):
 	# TODO: maybe put bullets on different collision masks so player bullets
 	# and enemy bullets don't trigger this
 	var target_entered = func (entered_target: Node2D):
