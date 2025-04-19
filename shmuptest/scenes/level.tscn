@@ -1,8 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://c8vh050y807xt"]
+[gd_scene load_steps=6 format=3 uid="uid://c8vh050y807xt"]
 
 [ext_resource type="Script" uid="uid://rmia46lcn1iw" path="res://scripts/2d/level.gd" id="1_2q6dc"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_rd3vj"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_2q6dc"]
+
+[sub_resource type="Gradient" id="Gradient_w7c3h"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_w8frs"]
+gradient = SubResource("Gradient_w7c3h")
 
 [node name="Level" type="Node2D" node_paths=PackedStringArray("shooter")]
 script = ExtResource("1_2q6dc")
@@ -26,3 +33,16 @@ offset_bottom = 40.0
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="bullets" type="Node2D" parent="."]
+
+[node name="timers" type="Node" parent="."]
+
+[node name="rotating_shooter" type="StaticBody2D" parent="."]
+position = Vector2(360, 146)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="rotating_shooter"]
+position = Vector2(-7.62939e-06, -28)
+scale = Vector2(16.5, 51.5)
+mesh = SubResource("QuadMesh_2q6dc")
+texture = SubResource("GradientTexture1D_w8frs")

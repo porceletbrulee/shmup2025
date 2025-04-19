@@ -2,72 +2,16 @@ extends Node2D
 
 @export var shooter: Node2D
 
+var _rotating_shooter: Node2D
+var _bullets: Node2D
+var _timers: Node
+
 var _player: Node2D
-var _blue_bullet_shooter: LinearBulletShooter
-var _red_bullet_shooter: LinearBulletShooter
-var _diamond_path_bullet_shooter: LinearBulletShooter
-var _fork_bullet_shooter: LinearBulletShooter
 
 func _ready():
-	var blue_bullet = preload("res://scenes/bluebullet.tscn")
-	var shoot_blue_bullet = func(elapsed_sec: float,
-								since_last_shoot_sec: float,
-								salvo_count,
-								target: Node2D) -> Array:
-		var radians_per_shoot = 2.0 * PI / 64
-		var fire_rate = 0.2
-		var speed = 75
-		if since_last_shoot_sec >= fire_rate:
-			var v = Vector2(1, 0)
-			var angle = (elapsed_sec / fire_rate) * radians_per_shoot
-			return [true, v.rotated(angle) * speed, salvo_count]
-		return [false, Vector2(), salvo_count]
-	self._blue_bullet_shooter = LinearBulletShooter.new(blue_bullet,
-														shoot_blue_bullet)
-
-	var red_bullet = preload("res://scenes/redbullet.tscn")
-	var shoot_red_bullet = func(elapsed_sec: float,
-								since_last_shoot_sec: float,
-								salvo_count,
-								target: Node2D) -> Array:
-		var salvo_size = 4
-		var salvo_break = 0.6
-		var fire_rate = 0.3
-		var speed = 150
-		if salvo_count >= salvo_size:
-			if salvo_break >= since_last_shoot_sec:
-				return [false, Vector2(), salvo_count]
-			return [false, Vector2(), 0]
-		if since_last_shoot_sec >= fire_rate:
-			var v = Vector2(1, 0)
-			var angle = self.shooter.get_angle_to(target.global_position)
-			return [true, v.rotated(angle) * speed, salvo_count + 1]
-		return [false, Vector2(), salvo_count]
-	self._red_bullet_shooter = LinearBulletShooter.new(red_bullet, shoot_red_bullet)
-
-
-	var diamond_path_bullet = preload("res://scenes/diamondpathbullet.tscn")
-	var shoot_diamond_path_bullet = func(elapsed_sec: float,
-										 since_last_shoot_sec: float,
-										 salvo_count,
-										 target: Node2D) -> Array:
-		if since_last_shoot_sec > 1.0:
-			return [true, Vector2(0, 1), 0]
-		else:
-			return [false, Vector2(), salvo_count]
-	self._diamond_path_bullet_shooter = LinearBulletShooter.new(diamond_path_bullet, shoot_diamond_path_bullet)
-
-	var fork_bullet = preload("res://scenes/forkpathmultibullet.tscn")
-	var shoot_fork_bullet = func(elapsed_sec: float,
-								 since_last_shoot_sec: float,
-								 salvo_count: int,
-								 target: Node2D) -> Array:
-		if since_last_shoot_sec > 2.0:
-			return [true, Vector2(0, 1), 0]
-		else:
-			return [false, Vector2(), salvo_count]
-	self._fork_bullet_shooter = LinearBulletShooter.new(fork_bullet, shoot_fork_bullet)
-
+	self._rotating_shooter = $rotating_shooter
+	self._bullets = $bullets
+	self._timers = $timers
 
 	self._player = preload("res://scenes/player.tscn").instantiate()
 	self._player.ui_hits = $hud/hits
@@ -75,13 +19,42 @@ func _ready():
 	self.add_child(self._player)
 	self._player.transform.origin = Vector2(250, 400)
 
-func _process(delta_sec: float):
-	for bullet_shooter in [
-		self._blue_bullet_shooter,
-		self._red_bullet_shooter,
-		self._diamond_path_bullet_shooter,
-		self._fork_bullet_shooter,
-	]:
-		var b = bullet_shooter.maybe_shoot(delta_sec, self._player)
-		if b != null:
-			self.shooter.add_child(b)
+
+	var red_bullet = preload("res://scenes/redbullet.tscn")
+
+	var blue_bullet = preload("res://scenes/bluebullet.tscn")
+	var diamond_path_bullet = preload("res://scenes/diamondpathbullet.tscn")
+	var fork_bullet = preload("res://scenes/forkpathmultibullet.tscn")
+
+	var shoot_timed_bullet = func(res: Resource, speed: float, shot_origin: Node2D):
+		var bullet = res.instantiate()
+		# important! assumes unrotated shot_origin is pointing down
+		var velocity = Vector2(0, 1) * speed
+		velocity = velocity.rotated(shot_origin.transform.get_rotation())
+		bullet.prepare(velocity, self._player)
+		self._bullets.add_child(bullet)
+		bullet.transform.origin = shot_origin.transform.origin
+
+	self._add_timer(
+		0.4,
+		shoot_timed_bullet.bind(blue_bullet, 75.0, self._rotating_shooter)
+	)
+
+	self._add_timer(
+		1.0,
+		shoot_timed_bullet.bind(diamond_path_bullet, 1.0, self.shooter)
+	)
+
+	self._add_timer(
+		2.0,
+		shoot_timed_bullet.bind(fork_bullet, 1.0, self.shooter)
+	)
+
+func _add_timer(timer_sec: float, callback: Callable):
+	var t = Timer.new()
+	t.timeout.connect(callback)
+	self._timers.add_child(t)
+	t.start(timer_sec)
+
+func _process(delta_sec: float) -> void:
+	self._rotating_shooter.rotate(delta_sec * PI / 8)
