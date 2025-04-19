@@ -8,6 +8,8 @@ var _timers: Node
 
 var _player: Node2D
 
+var _red_shooter: SalvoShooter
+
 func _ready():
 	self._rotating_shooter = $rotating_shooter
 	self._bullets = $bullets
@@ -21,6 +23,24 @@ func _ready():
 
 
 	var red_bullet = preload("res://scenes/redbullet.tscn")
+	var shoot_at_player = func(res: Resource, speed: float, shot_origin: Node2D, target: Node2D):
+		var v = Vector2(1, 0) * speed
+		var angle = self.shooter.get_angle_to(target.global_position)
+
+		var bullet = res.instantiate()
+		bullet.prepare(v.rotated(angle), target)
+		self._bullets.add_child(bullet)
+		bullet.transform.origin = shot_origin.transform.origin
+
+	# persist the SalvoShooter because Timer.timeout.connect(self._method)
+	# will not refcount the SalvoShooter
+	# https://github.com/godotengine/godot/issues/71389
+	self._red_shooter = SalvoShooter.new(
+		0.3, 0.6, 4,
+		shoot_at_player.bind(red_bullet, 150.0, self.shooter, self._player),
+		self._timers
+	)
+	self._red_shooter.start()
 
 	var blue_bullet = preload("res://scenes/bluebullet.tscn")
 	var diamond_path_bullet = preload("res://scenes/diamondpathbullet.tscn")
