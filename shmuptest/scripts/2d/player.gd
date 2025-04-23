@@ -31,4 +31,4 @@ func handle_movement(_delta_sec: float):
 
 func on_hit(bullet: Bullet):
 	self.hits += 1
-	self.ui_hits.text = "Hits: {0}".format([hits])
+	self.ui_hits.text = "Hits: {0} // FPS: {1}".format([hits, Engine.get_frames_per_second()])

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://v6df1qg011my"]
+
+[ext_resource type="Script" uid="uid://d2vonetwv0ost" path="res://scripts/2d/enemypatternmanager.gd" id="1_un5e4"]
+
+[sub_resource type="Curve2D" id="Curve2D_wbstl"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 259, -256, 128.029, -70.4465, -128.029, 70.4465, -106, 79, 0, 0, 0, 0, -474, 143, 128.029, 58.1949, -128.029, -58.1949, -925, 77, 0, 0, 0, 0, -1121, -108)
+}
+point_count = 5
+
+[node name="roundedpathenemy" type="Path2D"]
+curve = SubResource("Curve2D_wbstl")
+script = ExtResource("1_un5e4")
