@@ -12,7 +12,7 @@ func prepare(v: Vector2, target: Node2D):
 		# TODO: maybe make a PathBulletManager that normalizes v on path length
 		bullet.prepare(v, target)
 
-func bullet_cleaned_up(bullet: Bullet):
+func bullet_cleaned_up(_bullet: Bullet):
 	# for now, assume self.bullets is not dynamic
 	self._bullets_cleaned_up += 1
 	if self._bullets_cleaned_up >= self.bullets.size():

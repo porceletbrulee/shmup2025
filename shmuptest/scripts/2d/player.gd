@@ -29,6 +29,6 @@ func handle_movement(_delta_sec: float):
 	
 	self.move_and_slide()
 
-func on_hit(bullet: Bullet):
+func on_hit(_bullet: Bullet):
 	self.hits += 1
 	self.ui_hits.text = "Hits: {0} // FPS: {1}".format([hits, Engine.get_frames_per_second()])

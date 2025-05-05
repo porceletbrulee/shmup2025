@@ -8,7 +8,7 @@ func _ready():
 	self._visible_on_screen_notifier.screen_exited.connect(self.bullet_cleanup)
 
 # target must have an on_hit function
-func prepare(velocity: Vector2, target: Node2D):
+func prepare(_velocity: Vector2, target: Node2D):
 	# TODO: maybe put bullets on different collision masks so player bullets
 	# and enemy bullets don't trigger this
 	var target_entered = func (entered_target: Node2D):
@@ -17,7 +17,7 @@ func prepare(velocity: Vector2, target: Node2D):
 			self.bullet_hit(target)
 	self.body_entered.connect(target_entered)
 
-func bullet_hit(target: Node2D):
+func bullet_hit(_target: Node2D):
 	# TODO: sound effects, hit animation - maybe @export them
 	self.bullet_cleanup()
 

@@ -23,7 +23,7 @@ func _ready():
 	self._player.transform.origin = Vector2(500, 400)
 
 	var red_bullet = preload("res://scenes/redbullet.tscn")
-	var blue_bullet = preload("res://scenes/bluebullet.tscn")
+	var _blue_bullet = preload("res://scenes/bluebullet.tscn")
 	var diamond_path_bullet = preload("res://scenes/diamondpathbullet.tscn")
 	var fork_bullet = preload("res://scenes/forkpathmultibullet.tscn")
 
