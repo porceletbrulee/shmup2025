@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://drgljfc1odci8"]
+
+[ext_resource type="Texture2D" uid="uid://8k2s2q367rbs" path="res://sprites/clouds.png" id="1_xckbv"]
+
+[node name="cloudsprite" type="Sprite2D"]
+texture = ExtResource("1_xckbv")
+vframes = 4
