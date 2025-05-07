@@ -15,10 +15,14 @@ func _process(delta: float) -> void:
 	# XXX: will this change on resizes? is this expensive?
 	var viewport_rect = self.get_viewport_rect()
 	for layer in self._cloud_layers:
-		layer.process(delta)
+		layer.process(viewport_rect, delta)
 		layer.maybe_new_clouds(viewport_rect, self, delta)
 
 class CloudLayer extends RefCounted:
+	const X_SCALE_MAX = 2.5
+	const Y_SCALE_MULT_MAX = 1.2
+
+
 	var clouds: Array[Sprite2D]
 	var cloud_speed: float
 	var avg_cloud_gap_sec: float
@@ -63,14 +67,14 @@ class CloudLayer extends RefCounted:
 		if self._cached_height < 0:
 			self._cached_height = cloud.get_rect().size.y
 
-		var y = viewport_rect.size.y + (2 * self._cached_height)
+		var y = -X_SCALE_MAX * Y_SCALE_MULT_MAX * self._cached_height
 		cloud.position = Vector2(randi() % roundi(viewport_rect.size.x), y)
 		cloud.frame = randi() % (cloud.vframes * cloud.hframes)
 
-		var x_scale = randf_range(1.0, 2.5) * self.cloud_scale
+		var x_scale = randf_range(1.0, X_SCALE_MAX) * self.cloud_scale
 		cloud.scale.x *= x_scale
 		# don't make y scale be too different from x scale
-		cloud.scale.y *= x_scale * randf_range(0.8, 1.2)
+		cloud.scale.y *= x_scale * randf_range(0.8, Y_SCALE_MULT_MAX)
 		cloud.z_index = self.z_index
 
 		bg.add_child(cloud)
@@ -79,12 +83,13 @@ class CloudLayer extends RefCounted:
 		self._since_last_cloud_sec = 0
 		self._next_cloud_sec =  self.gen_next_cloud_sec()
 
-	func process(delta_sec: float):
+	func process(viewport_rect: Rect2, delta_sec: float):
 		# XXX: smells bad
 		var new_clouds: Array[Sprite2D] = []
 		for cloud in self.clouds:
-			cloud.position.y -= self.cloud_speed * delta_sec
-			if cloud.position.y < (-2.0 * self._cached_height):
+			cloud.position.y += self.cloud_speed * delta_sec
+			var y_max = viewport_rect.size.y + (X_SCALE_MAX * Y_SCALE_MULT_MAX * self._cached_height)
+			if cloud.position.y >= y_max:
 				cloud.queue_free()
 			else:
 				new_clouds.append(cloud)
