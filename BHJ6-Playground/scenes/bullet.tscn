@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://cffkqk51f6efx"]
+
+[ext_resource type="Texture2D" uid="uid://b14vgmmrrlep7" path="res://sprites/bluebullet.png" id="1_mkf8s"]
+[ext_resource type="Script" uid="uid://cbnog4wuu4qqf" path="res://scripts/bullet.gd" id="1_y25gk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mkf8s"]
+radius = 5.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mkf8s"]
+atlas = ExtResource("1_mkf8s")
+region = Rect2(0, 0, 16, 16)
+
+[node name="Bullet" type="Area2D"]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_y25gk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mkf8s")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+show_behind_parent = true
+texture_filter = 1
+texture = SubResource("AtlasTexture_mkf8s")

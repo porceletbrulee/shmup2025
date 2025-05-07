@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://brb7bjl53c31j"]
+
+[ext_resource type="PackedScene" uid="uid://cggdia4x0k3dh" path="res://scenes/level.tscn" id="1_uwrxv"]
+[ext_resource type="Script" uid="uid://d0g0epatan3y2" path="res://scripts/game.gd" id="1_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://bum6kaoq8emm2" path="res://scenes/border.tscn" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://cmikhgj7kkw3a" path="res://scenes/left_border.tscn" id="4_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://dy7i7phrg7fet" path="res://scenes/right_border.tscn" id="5_iywne"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_yqjtg")
+
+[node name="Level" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(334, 0)
+
+[node name="BottomBorder" parent="." instance=ExtResource("3_lnu2h")]
+position = Vector2(988, 720)
+rotation = 1.5708
+
+[node name="TopBorder" parent="." instance=ExtResource("3_lnu2h")]
+position = Vector2(296, 0)
+rotation = -1.5708
+
+[node name="LeftBorder" parent="." instance=ExtResource("4_lbhrr")]
+
+[node name="RightBorder" parent="." instance=ExtResource("5_iywne")]
+position = Vector2(946, 0)
