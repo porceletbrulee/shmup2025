@@ -1,10 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://brb7bjl53c31j"]
+[gd_scene load_steps=10 format=3 uid="uid://brb7bjl53c31j"]
 
 [ext_resource type="PackedScene" uid="uid://cggdia4x0k3dh" path="res://scenes/level.tscn" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://d0g0epatan3y2" path="res://scripts/game.gd" id="1_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://bum6kaoq8emm2" path="res://scenes/border.tscn" id="3_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://cmikhgj7kkw3a" path="res://scenes/left_border.tscn" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://dy7i7phrg7fet" path="res://scenes/right_border.tscn" id="5_iywne"]
+[ext_resource type="Script" uid="uid://c3kdynsybuq81" path="res://scripts/background/clouds.gd" id="6_p57ef"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_u5sy4"]
+
+[sub_resource type="Gradient" id="Gradient_w8frs"]
+offsets = PackedFloat32Array(0.337662)
+colors = PackedColorArray(5.19812e-06, 0.588531, 0.896646, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gee14"]
+gradient = SubResource("Gradient_w8frs")
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_yqjtg")
@@ -24,3 +34,14 @@ rotation = -1.5708
 
 [node name="RightBorder" parent="." instance=ExtResource("5_iywne")]
 position = Vector2(946, 0)
+
+[node name="background" type="Node2D" parent="."]
+z_index = -20
+script = ExtResource("6_p57ef")
+
+[node name="bgmesh" type="MeshInstance2D" parent="background"]
+z_index = -20
+position = Vector2(642, 373)
+scale = Vector2(1456, 882)
+mesh = SubResource("QuadMesh_u5sy4")
+texture = SubResource("GradientTexture1D_gee14")
